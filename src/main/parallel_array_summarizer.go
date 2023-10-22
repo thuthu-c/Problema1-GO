@@ -10,13 +10,19 @@ import (
 func main() {
 
 	exponent, _ := strconv.Atoi(os.Args[1])
-	//numOfThreads, _ := strconv.Atoi(os.Args[2])
+	numOfThreads, _ := strconv.Atoi(os.Args[2])
 
 	items := loadItems(int(math.Pow10(exponent)))
 
-	for i, item := range items {
-		fmt.Println(i, item)
-	}
+	wg.Add(numOfThreads)
+
+	processer := NewProcesser(&items, numOfThreads)
+	processer.ProcessItems()
+
+	wg.Wait()
+
+	fmt.Println(processer.idsSmallerThan5)
+	fmt.Println(processer.idsBiggerOrEqualTo5)
 }
 
 func loadItems(amount int) []Item {

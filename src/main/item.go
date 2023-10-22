@@ -17,11 +17,11 @@ func NewItem(id int) Item {
 }
 
 // GenerateTotal generates a float64 in range [0, 10)
-func (item Item) GenerateTotal() float64 {
+func (Item) GenerateTotal() float64 {
 	return rand.Float64() * 10
 }
 
 // GenerateGroup generates a integer in range [1, 5]
-func (item Item) GenerateGroup() int {
+func (Item) GenerateGroup() int {
 	return rand.Intn(5) + 1
 }
