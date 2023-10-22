@@ -9,7 +9,7 @@ type Processer struct {
 	idsBiggerOrEqualTo5 []int
 }
 
-func (processer Processer) ProcessItems() {
+func (processer *Processer) ProcessItems() {
 
 	operationAmountOfThreads := processer.getOperationAmountOfThreads()
 
@@ -27,6 +27,7 @@ func (processer Processer) ProcessItems() {
 
 		go NewIdsObtainer(processer.items, &segment, &idsSmallerThan5Filter, &idsSmallerThan5Mutex,
 			&processer.idsSmallerThan5).ObtainIds()
+
 		go NewIdsObtainer(processer.items, &segment, &idsBiggerOrEqualTo5Filter, &idsBiggerOrEqualTo5Mutex,
 			&processer.idsBiggerOrEqualTo5).ObtainIds()
 

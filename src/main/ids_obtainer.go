@@ -16,18 +16,17 @@ func NewIdsObtainer(items *[]Item, segment *Segment, rule *func(total float64) b
 	return &IdsObtainer{items, segment, rule, ids, mutex}
 }
 
-func (idsObtainer IdsObtainer) ObtainIds() {
+func (idsObtainer *IdsObtainer) ObtainIds() {
 
 	for i := idsObtainer.segment.begin; i <= idsObtainer.segment.end; i++ {
 
 		item := (*idsObtainer.items)[i]
 		if idsObtainer.MatchesRule(item) {
 			idsObtainer.mutex.Lock()
-			*idsObtainer.ids = append(*idsObtainer.ids, item.id) //fixme: not adding to reference
+			*idsObtainer.ids = append(*idsObtainer.ids, item.id)
 			idsObtainer.mutex.Unlock()
 		}
 	}
-
 	wg.Done()
 }
 
