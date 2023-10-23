@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 	"strconv"
+	"time"
 )
 
 func main() {
@@ -12,18 +13,28 @@ func main() {
 	exponent, _ := strconv.Atoi(os.Args[1])
 	numOfThreads, _ := strconv.Atoi(os.Args[2])
 
+	fmt.Println(">>> Loading items...")
 	items := loadItems(int(math.Pow10(exponent)))
+	fmt.Println(">>> Items loaded!")
 
 	wg.Add(numOfThreads)
 
+	fmt.Println(">>> Processing items...")
 	processer := NewProcesser(&items, numOfThreads)
+
+	start := time.Now()
 	processer.ProcessItems()
 
 	wg.Wait()
 
-	fmt.Println(processer.idsSmallerThan5)
-	fmt.Println(processer.idsBiggerOrEqualTo5)
-	fmt.Println(processer.totalSum)
+	timeElapsed := time.Since(start)
+	//fmt.Println(items)
+
+	//fmt.Println(processer.idsSmallerThan5)
+	//fmt.Println(processer.idsBiggerOrEqualTo5)
+	//fmt.Println(processer.totalSum)
+	//fmt.Println(processer.subtotalPerGroup)
+	fmt.Println("Time elapsed: ", timeElapsed)
 
 }
 

@@ -8,6 +8,7 @@ type Processer struct {
 	idsSmallerThan5     []int
 	idsBiggerOrEqualTo5 []int
 	totalSum            float64
+	subtotalPerGroup    map[int]float64
 }
 
 func (processer *Processer) ProcessItems() {
@@ -21,6 +22,8 @@ func (processer *Processer) ProcessItems() {
 	idsBiggerOrEqualTo5Filter := func(total float64) bool { return total >= 5 }
 
 	totalSumMutex := sync.Mutex{}
+
+	subTotalPerGroupMutex := sync.Mutex{}
 
 	segmentBegin := 0
 	var segmentEnd int
@@ -36,7 +39,8 @@ func (processer *Processer) ProcessItems() {
 
 		go NewTotalSumObtainer(&processer.totalSum, processer.items, &segment, &totalSumMutex).ObtainTotalSum()
 
-		wg.Done()
+		go NewSubtotalPerGroupObtainer(processer.items, &segment, &processer.subtotalPerGroup,
+			&subTotalPerGroupMutex).obtainSubtotalPerGroup()
 
 		segmentBegin = segmentEnd + 1
 	}
@@ -59,5 +63,5 @@ func (processer Processer) getSegmentEnd(begin int, operationAmountOfThreads int
 }
 
 func NewProcesser(items *[]Item, numberOfThreads int) *Processer {
-	return &Processer{items: items, numberOfThreads: numberOfThreads}
+	return &Processer{items: items, numberOfThreads: numberOfThreads, subtotalPerGroup: make(map[int]float64)}
 }
