@@ -7,6 +7,7 @@ type Processer struct {
 	numberOfThreads     int
 	idsSmallerThan5     []int
 	idsBiggerOrEqualTo5 []int
+	totalSum            float64
 }
 
 func (processer *Processer) ProcessItems() {
@@ -18,6 +19,8 @@ func (processer *Processer) ProcessItems() {
 
 	idsBiggerOrEqualTo5Mutex := sync.Mutex{}
 	idsBiggerOrEqualTo5Filter := func(total float64) bool { return total >= 5 }
+
+	totalSumMutex := sync.Mutex{}
 
 	segmentBegin := 0
 	var segmentEnd int
@@ -31,7 +34,8 @@ func (processer *Processer) ProcessItems() {
 		go NewIdsObtainer(processer.items, &segment, &idsBiggerOrEqualTo5Filter, &idsBiggerOrEqualTo5Mutex,
 			&processer.idsBiggerOrEqualTo5).ObtainIds()
 
-		wg.Done()
+		go NewTotalSumObtainer(&processer.totalSum, processer.items, &segment, &totalSumMutex).ObtainTotalSum()
+
 		wg.Done()
 
 		segmentBegin = segmentEnd + 1

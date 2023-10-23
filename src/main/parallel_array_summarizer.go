@@ -23,6 +23,8 @@ func main() {
 
 	fmt.Println(processer.idsSmallerThan5)
 	fmt.Println(processer.idsBiggerOrEqualTo5)
+	fmt.Println(processer.totalSum)
+
 }
 
 func loadItems(amount int) []Item {
