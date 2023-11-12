@@ -20,20 +20,20 @@ func main() {
 	wg.Add(numOfThreads)
 
 	fmt.Println(">>> Processing items...")
-	processer := NewProcesser(&items, numOfThreads)
+	processor := NewProcessor(&items, numOfThreads)
 
 	start := time.Now()
-	processer.ProcessItems()
+	processor.ProcessItems()
 
 	wg.Wait()
 
 	timeElapsed := time.Since(start)
-	//fmt.Println(items)
+	fmt.Println(items)
 
-	//fmt.Println(processer.idsSmallerThan5)
-	//fmt.Println(processer.idsBiggerOrEqualTo5)
-	//fmt.Println(processer.totalSum)
-	//fmt.Println(processer.subtotalPerGroup)
+	fmt.Printf("Total sum: %v\n", processor.totalSum)
+	fmt.Printf("Subtotal per group: %v\n", processor.subtotalPerGroup)
+	fmt.Printf("Amount of items which total is smaller than 5: %v\n", processor.idsSmallerThan5)
+	fmt.Printf("Amount of items which total is bigger or equal to 5: %v\n", processor.idsBiggerOrEqualTo5)
 	fmt.Println("Time elapsed: ", timeElapsed)
 
 }
