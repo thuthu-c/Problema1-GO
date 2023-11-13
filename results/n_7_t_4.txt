@@ -1,0 +1,5 @@
+Total sum: 4.9995296571524344e+07
+Subtotal per group: map[1:9.988362099219022e+06 2:9.991312625723867e+06 3:1.0007331926628526e+07 4:1.0000127946877433e+07 5:1.0008161973072527e+07]
+Amount of items which total is smaller than 5: 5000435
+Amount of items which total is bigger or equal to 5: 4999561
+Time elapsed:  1204 ms
